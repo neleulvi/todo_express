@@ -19,6 +19,18 @@ const readFile = (filename) => {
         });
     })
 }
+const writeFile = (filename, data) => {
+    return new Promise((resolve, reject) =>{
+        //get data from file
+        fs.writeFile(filename, data, 'utf-8', err =>{
+            if(err) {
+                console.error(err);
+                return;
+            }
+            resolve(true)
+        });
+    })
+}
 
 app.get('/', (req, res)=>{
     //get data from file
@@ -47,19 +59,11 @@ app.post('/', (req, res) =>{
                 "id": index,
                 "task": req.body.task
             }
-            console.log(newTask)
             tasks.push(newTask)
-            console.log(tasks)
 
-            const data = JSON.stringify(tasks, null, 2)
-            
-            fs.writeFile('./tasks.json', data, err => {
-                if (err) {
-                  console.error(err);
-                } else {
-                  res.redirect('/')
-                }
-              });
+            data = JSON.stringify(tasks, null, 2)
+            writeFile('./tasks.json', data)
+            res.redirect('/')
         })
 })
 
@@ -73,13 +77,9 @@ app.get('/delete-task/:taskId', (req, res) => {
             }
         })
         data = JSON.stringify(tasks, null, 2)
-        fs.writeFile('./tasks.json', data, err => {
-            if(err) {
-                console.error(err)
-                return
-            }
+        writeFile('./tasks.json', data)
+    
             res.redirect('/')
-        })
     })
 })
 app.listen(3001, () =>{

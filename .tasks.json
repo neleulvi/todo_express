@@ -1,5 +1,13 @@
 [
   {
+    "id": 1,
+    "task": "Study HTML"
+  },
+  {
+    "id": 2,
+    "task": "Study CSS"
+  },
+  {
     "id": 4,
     "task": "Study OOP"
   },

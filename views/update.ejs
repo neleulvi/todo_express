@@ -6,7 +6,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>Todo List</title>
+    <title>Update List</title>
 </head>
 <body>
     <div class="container">
@@ -21,32 +21,19 @@
                     </div>
                   </div>
                   <% } %>
-                  <span class="card-title">Todo List</span>
+                  <span class="card-title">Update List</span>
                   <div class="row">
-                    <form class="col s12" method="post" action="/">
+                    <form class="col s12" method="post" action="/update-task">
                       <div class="row">
                         <div class="input-field col s6">
-                          <input placeholder="Task" id="task" name="task" type="text" class="validate">
-                          <label for="task">Insert task</label>
+                          <input value="<%= updateTask %>" id="task" name="task" type="text" class="validate">
+                          <label for="task">Update task</label>
                         </div>
                       </div>
-                      <input type="submit" value="Add Task" class="btn"/>
+                      <input type="submit" value="updateTask" class="btn"/>
+                      <a class="btn" href="/">Cancel</a>
                     </form>
                   </div>
-                </div>
-                <div class="card-action">
-                    <ul class="collection">
-                      <% tasks.forEach(task => { %>
-                        <li class="collection-item">
-                          <%= task.task %>
-                          <a href="delete-task/<%= task.id %>" class="secondary-content"><i class="material-icons">delete</i></a>
-                          <a href="update-task/<%= task.id %>" class="secondary-content"><i class="material-icons">edit</i></a>
-                        </li>
-                      <% }) %>
-                      </ul>
-                      <div>
-                        <a href="delete-tasks"class="btn">Clear all</a>
-                      </div>
                 </div>
               </div>
             </div>

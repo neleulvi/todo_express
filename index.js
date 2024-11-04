@@ -77,7 +77,7 @@ app.post('/', (req, res) =>{
             writeFile('./tasks.json', data)
             res.redirect('/')
         }) 
-    }
+        }
 })
 
 app.get('/delete-task/:taskId', (req, res) => {
@@ -102,34 +102,46 @@ app.get('/delete-tasks', (req, res) =>{
     res.redirect('/')
 
 })
+app.get('/update-task:taskId', (req,res) => {
+    let updateTaskId = parseInt(req.params.taskId)  
+    readFile('./tasks.json')
+        .then(tasks => {
+            let updateTask
+            tasks.forEach((task) => {
+                if(task.id === updateTaskId){
+                    updateTask = task.task
+                }
+            })
+            res.render('update', {
+               updateTask : updateTask,
+               updateTaskId: updateTaskId,
+               error: null 
+            })
+        })
+})
 
 app.post('/update-task', (req, res) =>{
+    console.log(req.body)
     let updateTaskId = parseInt(req.params.taskId)
     let updateTask = req.body.task
     let error = null
     if (updateTask.trim().length === 0){
         error = "please insert correct task data"
-        readFile('./tasks.json')
-        .then(tasks =>{
             res.render('update', {
                 updateTask : updateTask,
                 updateTaskId : updateTaskId,
                 error:error 
             })
-        })
     }else {
         readFile('./tasks.json')
         .then(tasks => {
-            let updateTask
-            tasks.forEach((task) =>{
+            tasks.forEach((task, index) =>{
                 if(task.id === updateTaskId){
                     tasks[index].task = updateTask
                 }
             })
                 console.log(tasks)
                 const data = JSON.stringify (tasks, null, 2)
-    
-                data = JSON.stringify(tasks, null, 2)
                 writeFile('./tasks.json', data)
                 res.redirect('/')
             }) 

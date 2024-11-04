@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express ()
-
 const path = require('path')
-const fs = require("fs")
+const fs = require("node:fs")
+app.use(express.urlencoded({ extended: true}))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
@@ -56,9 +56,9 @@ app.post('/', (req, res) =>{
                 error:error
             })
         })
-    }else 
+    }else {
     //get data from file
-    readFile('./tasks.json')
+        readFile('./tasks.json')
         .then((tasks) => {
             let index
             if(tasks.length === 0)
@@ -77,7 +77,7 @@ app.post('/', (req, res) =>{
             writeFile('./tasks.json', data)
             res.redirect('/')
         }) 
-
+    }
 })
 
 app.get('/delete-task/:taskId', (req, res) => {
@@ -111,26 +111,23 @@ app.post('/update-task', (req, res) =>{
         error = "please insert correct task data"
         readFile('./tasks.json')
         .then(tasks =>{
-            res.render('index', {
-                tasks:tasks,
+            res.render('update', {
+                updateTask : updateTask,
+                updateTaskId : updateTaskId,
                 error:error 
             })
         })
     }else {
         readFile('./tasks.json')
-            .then((tasks) => {
-                let index
-                if(tasks.length === 0)
-                {
-                    index = 0
-                }else{
-                    index = tasks[tasks.length-1].id + 1;
+        .then(tasks => {
+            let updateTask
+            tasks.forEach((task) =>{
+                if(task.id === updateTaskId){
+                    tasks[index].task = updateTask
                 }
-                const newTask = {
-                    "id": index,
-                    "task": req.body.task
-                }
-                tasks.push(newTask)
+            })
+                console.log(tasks)
+                const data = JSON.stringify (tasks, null, 2)
     
                 data = JSON.stringify(tasks, null, 2)
                 writeFile('./tasks.json', data)
@@ -139,25 +136,6 @@ app.post('/update-task', (req, res) =>{
         }
 })
 
-app.get('/update-task/:taskId', (req, res) =>{
-    let updateTaskId = parseInt(req.params.taskId)
-    readFile('./tasks.json')
-    .then(tasks => {
-        let updateTask
-        tasks.forEach((task) =>{
-            if(task.id === updateTaskId){
-                updateTask = task.task
-            }
-        })
-        console.log(updateTask)
-        res.render('update', {
-        updateTask: updateTask,
-        updateTaskId: updateTaskId,
-        error: null
-        })
-    
-    })
-})
 
 
 app.listen(3001, () =>{

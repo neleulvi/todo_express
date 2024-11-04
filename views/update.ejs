@@ -21,13 +21,14 @@
                     </div>
                   </div>
                   <% } %>
-                  <span class="card-title">Update List</span>
+                  <span class="card-title">Todo List</span>
                   <div class="row">
                     <form class="col s12" method="post" action="/update-task">
                       <div class="row">
                         <div class="input-field col s6">
-                          <input value="<%= updateTask %>" id="task" name="task" type="text" class="validate">
+                          <input value="<%= updateTask %>" id="task" type="text" class="validate" name = "task">
                           <label for="task">Update task</label>
+                          <input type="hidden" id="taskId" name="taskId" value="<%= updateTaskId %>">
                         </div>
                       </div>
                       <input type="submit" value="updateTask" class="btn"/>
